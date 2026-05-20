@@ -64,8 +64,6 @@ COPY backend ./backend
 
 COPY --from=frontend-builder /app/frontend/.next ./frontend/.next
 
-COPY --from=frontend-builder /app/frontend/public ./frontend/public
-
 # ---------------------------------------------------------
 # Railway Port
 # ---------------------------------------------------------
