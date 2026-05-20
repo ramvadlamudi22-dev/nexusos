@@ -19,6 +19,9 @@ COPY frontend/ .
 
 RUN npm run build
 
+# Ensure public directory exists (create if missing)
+RUN mkdir -p /app/frontend/public
+
 # ---------------------------------------------------------
 # Stage 2 — Backend Runtime
 # ---------------------------------------------------------
