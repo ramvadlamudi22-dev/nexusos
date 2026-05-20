@@ -1,40 +1,86 @@
-# NexusOS Backend Dockerfile
-# Governed runtime with deterministic execution
+# =========================================================
+# NexusOS Production Runtime
+# Railway + FastAPI + Frontend Runtime
+# =========================================================
 
-# Stage 1: Build frontend (for production static serving)
+# ---------------------------------------------------------
+# Stage 1 — Frontend Build
+# ---------------------------------------------------------
+
 FROM node:20-alpine AS frontend-builder
+
 WORKDIR /app/frontend
-COPY frontend/package.json frontend/package-lock.json ./
-RUN npm ci --ignore-scripts
-COPY frontend/ ./
+
+COPY frontend/package*.json ./
+
+RUN npm install
+
+COPY frontend/ .
+
 RUN npm run build
 
-# Stage 2: Backend runtime
-FROM python:3.12-slim AS runtime
+# ---------------------------------------------------------
+# Stage 2 — Backend Runtime
+# ---------------------------------------------------------
+
+FROM python:3.11-slim
+
 WORKDIR /app
 
-# Install system dependencies (curl for healthcheck, wget as fallback)
+# ---------------------------------------------------------
+# Runtime Environment
+# ---------------------------------------------------------
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/app
+
+# ---------------------------------------------------------
+# System Dependencies
+# ---------------------------------------------------------
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
+    build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY backend/requirements.txt ./requirements.txt
+# ---------------------------------------------------------
+# Python Dependencies
+# ---------------------------------------------------------
+
+COPY backend/requirements.txt requirements.txt
+
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy backend source
-COPY backend/ ./backend/
+# ---------------------------------------------------------
+# Copy Backend
+# ---------------------------------------------------------
 
-# Copy built frontend static assets (for reference/production mode)
-COPY --from=frontend-builder /app/frontend/.next/static ./static/frontend/
+COPY backend ./backend
 
-# Expose backend port
+# ---------------------------------------------------------
+# Copy Frontend Build
+# ---------------------------------------------------------
+
+COPY --from=frontend-builder /app/frontend/.next ./frontend/.next
+
+COPY --from=frontend-builder /app/frontend/public ./frontend/public
+
+# ---------------------------------------------------------
+# Railway Port
+# ---------------------------------------------------------
+
 EXPOSE 8000
 
-# Health check endpoint
-HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:${PORT:-8000}/api/health || exit 1
+# ---------------------------------------------------------
+# Railway Healthcheck
+# ---------------------------------------------------------
 
-# Run backend with explicit module path
-ENV PYTHONPATH=/app
-CMD uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-8000}
+HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
+CMD curl -f http://localhost:${PORT:-8000}/api/health || exit 1
+
+# ---------------------------------------------------------
+# Runtime Start
+# ---------------------------------------------------------
+
+CMD ["sh", "-c", "python -m backend.main"]

@@ -1,13 +1,25 @@
+# NexusOS Railway Production Runtime
+
 FROM python:3.11-slim
 
+# Working directory
 WORKDIR /app
 
+# Prevent Python cache + buffered logs
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONPATH=/app
+
+# Install dependencies
 COPY backend/requirements.txt requirements.txt
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy project
 COPY . .
 
-ENV PYTHONUNBUFFERED=1
+# Railway dynamic port
+EXPOSE 8000
 
-CMD ["python", "-m", "backend.main"]
+# Start NexusOS backend
+CMD ["sh", "-c", "python -m backend.main"]
