@@ -1,0 +1,26 @@
+# NexusOS Frontend Development Dockerfile
+# Used by docker-compose.yml for hot-reload development mode.
+
+FROM node:20-alpine
+
+WORKDIR /app
+
+# Install wget for healthcheck
+RUN apk add --no-cache wget
+
+# Install dependencies
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# Copy source
+COPY . .
+
+EXPOSE 3000
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --start-period=15s --retries=3 \
+    CMD wget --spider -q http://localhost:3000 || exit 1
+
+# Run Next.js dev server
+# NEXT_PUBLIC_API_BASE_URL is set via docker-compose environment
+CMD ["npm", "run", "dev"]

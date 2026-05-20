@@ -1,0 +1,14 @@
+node_modules
+artifacts
+proofs
+.playwright-mcp
+.pytest_cache
+.codex_pydeps
+.vscode
+data
+demos
+.git
+.next
+dist
+coverage
+*.log

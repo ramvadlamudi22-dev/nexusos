@@ -1,0 +1,19 @@
+{
+  "name": "nexusos",
+  "version": "0.2.0",
+  "description": "NexusOS — Governed AI operational trust platform",
+  "bin": {
+    "nexusos": "./bin/nexusos.js"
+  },
+  "scripts": {
+    "verify": "node bin/nexusos.js verify"
+  },
+  "dependencies": {
+    "playwright": "^1.44.0"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["deployment", "verification", "governance", "visual-testing", "audit", "playwright"],
+  "license": "MIT"
+}

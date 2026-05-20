@@ -1,0 +1,60 @@
+name: 'NexusOS Visual Verify'
+description: 'Governed deployment verification with visual proof — screenshots, audit trail, pass/fail verdict'
+author: 'NexusOS'
+
+branding:
+  icon: 'shield'
+  color: 'green'
+
+inputs:
+  url:
+    description: 'Target URL to verify'
+    required: true
+  pages:
+    description: 'Comma-separated paths to check (default: /)'
+    required: false
+    default: '/'
+  api-endpoints:
+    description: 'Comma-separated API paths to check (default: none)'
+    required: false
+    default: ''
+  expected-title:
+    description: 'Expected page title substring'
+    required: false
+    default: ''
+  viewport:
+    description: 'Viewport size (widthxheight)'
+    required: false
+    default: '1920x1080'
+  timeout:
+    description: 'Per-page timeout in milliseconds'
+    required: false
+    default: '30000'
+  fail-on-console-errors:
+    description: 'Fail if console errors detected'
+    required: false
+    default: 'false'
+  nexusos-api-key:
+    description: 'NexusOS API key (for hosted mode)'
+    required: false
+    default: ''
+  nexusos-api-url:
+    description: 'NexusOS API URL (for hosted mode)'
+    required: false
+    default: ''
+
+outputs:
+  verdict:
+    description: 'Verification verdict (PASS, FAIL, DEGRADED)'
+  score:
+    description: 'Verification score (0-100)'
+  duration:
+    description: 'Execution duration in milliseconds'
+  screenshots:
+    description: 'Path to screenshots directory'
+  report:
+    description: 'Path to verification report JSON'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

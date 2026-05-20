@@ -1,0 +1,16 @@
+{
+  "name": "nexusos-visual-verify",
+  "version": "1.0.0",
+  "description": "Governed deployment verification with visual proof",
+  "main": "index.js",
+  "scripts": {
+    "build": "ncc build index.js -o dist"
+  },
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "playwright": "^1.44.0"
+  },
+  "devDependencies": {
+    "@vercel/ncc": "^0.38.0"
+  }
+}

@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  background: #0d1117;
+  color: #c9d1d9;
+}
+
+h1,
+h2,
+h3 {
+  color: #e6edf3;
+}
+
+/* Card hover effects */
+.panel-card {
+  transition: border-color 0.2s ease;
+}
+
+.panel-card:hover {
+  border-color: #58a6ff !important;
+}
+
+/* Status indicator dots */
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.status-dot-green {
+  background-color: #3fb950;
+}
+
+.status-dot-yellow {
+  background-color: #d29922;
+}
+
+.status-dot-red {
+  background-color: #f85149;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #30363d;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #484f58;
+}
+
+/* Section headers */
+.section-header {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #8b949e;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #21262d;
+}
+
+/* Transitions for interactive elements */
+button,
+a,
+select,
+input {
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  main {
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  main {
+    padding: 8px !important;
+  }
+}
